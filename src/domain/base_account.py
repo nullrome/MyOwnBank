@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from decimal import Decimal
 
-from src.exceptions import InvalidAmountError, InSufficientFundsError
+from src.exceptions import InvalidAmountError, InsufficientFundsError
 
 
 class BaseAccount(ABC):
@@ -39,9 +39,15 @@ class BaseAccount(ABC):
         if amount <= Decimal("0.0"):
             raise InvalidAmountError(amount)
         if amount > self.balance:
-            raise InSufficientFundsError(account_id=self.account_id,
+            raise InsufficientFundsError(account_id=self.account_id,
                                          balance=self.balance,
                                          requested=amount
                                          )
         self._validate_withdrawal(amount)
         self.__balance -= amount
+
+
+    @abstractmethod
+    def _validate_withdrawal(self, amount: Decimal) -> None:
+        # heirs return their own verdict
+        raise NotImplementedError
