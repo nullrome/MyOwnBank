@@ -28,14 +28,21 @@ class SavingsAccount(BaseAccount):
         return self.__interest_rate
 
 
+    @property
+    def withdrawals_this_month(self) -> int:
+        return self.__withdrawal_this_month
+
+
     @interest_rate.setter
     def interest_rate(self, interest_rate):
+        if not isinstance(interest_rate, Decimal):
+            raise InvalidAmountError(interest_rate)
         if interest_rate < 0:
-            raise InvalidInterestRateError(interest_rate)
+            raise InvalidInterestRateError(interest_rate=interest_rate)
 
 
     def _validate_withdrawal(self, amount: Decimal) -> None:
         if not self.__withdrawal_this_month >= self.MAX_WITHDRAWALS_PER_MONTH:
-            raise WithdrawalLimitExceededError()
+            raise WithdrawalLimitExceededError(owner=self.owner, withdrawals_this_month=self.withdrawals_this_month)
         if not isinstance(amount, Decimal):
             raise InsufficientFundsError(account_id=self.account_id, balance=self.balance, requested=amount)

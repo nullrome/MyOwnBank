@@ -3,11 +3,13 @@ from decimal import Decimal
 from datetime import datetime
 
 
-class BankError(Exception): # base exception for all errors
+class BankError(Exception):
+    # base exception for all errors
     pass
 
 
 class InvalidAmountError(BankError):
+    # invalid amount of money for operation
     def __init__(self, amount: object):
         self.amount = amount
         super().__init__(
@@ -17,6 +19,7 @@ class InvalidAmountError(BankError):
 
 
 class InsufficientFundsError(BankError):
+    # not enough money on account
     def __init__(self, account_id: str, balance: Decimal, requested: Decimal):
         self.account_id = account_id
         self.balance = balance
@@ -28,12 +31,14 @@ class InsufficientFundsError(BankError):
 
 
 class AccountNotFoundError(BankError):
+    # account was not found
     def __init__(self, account_id: str):
         self.account_id = account_id
         super().__init__(f"Account {self.account_id} is not found.")
 
 
 class InvalidInterestRateError(BankError):
+    # impossible interest rate
     def __init__(self, interest_rate: object):
         self.interest_rate = interest_rate
         super().__init__(
@@ -43,17 +48,16 @@ class InvalidInterestRateError(BankError):
 
 
 class WithdrawalLimitExceededError(BankError):
-    def __init__(self, account_id: str, owner: str, balance: Decimal, withdrawals_this_month: object, interest_rate: Decimal) -> None:
-        self.account_id = account_id
+    # too many withdrawals in this month
+    def __init__(self, owner: str, withdrawals_this_month: object) -> None:
         self.owner = owner
-        self.balance = balance
         self.withdrawals_this_month = withdrawals_this_month
-        self.interest_rate = interest_rate
         super().__init__(
             f"The user has exhausted their withdrawal limit for the month."
-            f"User {self.owner} has limit per month: 3. Number of withdrawals in {datetime.datetime.now().month}: {self.withdrawals_this_month}."
+            f"User {self.owner} has limit per month: 3. Number of withdrawals in {datetime.now().month}: {self.withdrawals_this_month}."
         )
 
 
 class InvalidTransactionError(BankError):
+    # soon
     pass

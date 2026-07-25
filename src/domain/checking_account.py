@@ -1,5 +1,3 @@
-from abc import abstractmethod
-
 from src.domain.base_account import BaseAccount
 
 from decimal import Decimal
