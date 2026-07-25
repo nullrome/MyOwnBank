@@ -54,6 +54,11 @@
     "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/admin/Projects/MyOwnBank",
     "settings.editor.selected.configurable": "editor.preferences.completion"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "TEXT"
+    ]
   }
 }]]></component>
   <component name="RunManager">
