@@ -8,7 +8,7 @@ from src.exceptions import InsufficientFundsError
 class CheckingAccount(BaseAccount):
     __slots__ = ()
 
-    def __init__(self, account_id: str, owner: str, balance: Decimal = Decimal("0.0")):
+    def __init__(self, account_id: str, owner: str, balance: Decimal = Decimal("0.00")):
         super().__init__(account_id=account_id, owner=owner, balance=balance)
 
 

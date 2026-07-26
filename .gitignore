@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
+
+# Secrets (креды PostgreSQL и прочее)
+.env
+
+# roadmap
+
+ROADMAP.md

@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
+
 from decimal import Decimal
 
-from src.exceptions import InvalidAmountError, InsufficientFundsError
+from src.exceptions import InvalidAmountError
 
 
 class BaseAccount(ABC):
     __slots__ = ('__account_id', '__owner', '__balance', '__transaction_history')
 
 
-    def __init__(self, account_id: str, owner: str, balance: Decimal = Decimal("0.0")):
+    def __init__(self, account_id: str, owner: str, balance: Decimal = Decimal("0.00")):
         self.__account_id = account_id
         self.__owner = owner
         self.__balance = balance
@@ -29,25 +30,35 @@ class BaseAccount(ABC):
         return self.__balance
 
 
-    def deposit(self, amount: Decimal):
-        if amount <= Decimal("0.0"):
-            raise InvalidAmountError(amount)
+    def deposit(self, amount: Decimal) -> None:
+        self._validate_amount(amount=amount)
         self.__balance += amount
 
 
-    def withdraw(self, amount: Decimal):
-        if amount <= Decimal("0.0"):
-            raise InvalidAmountError(amount)
-        if amount > self.balance:
-            raise InsufficientFundsError(account_id=self.account_id,
-                                         balance=self.balance,
-                                         requested=amount
-                                         )
-        self._validate_withdrawal(amount)
+    def withdraw(self, amount: Decimal) -> None:
+        self._validate_amount(amount=amount)
+        self._validate_withdrawal(amount=amount)
         self.__balance -= amount
+        self._on_withdrawal(amount=amount)
+
+
+    def _validate_amount(self, amount: Decimal) -> None:
+        if not isinstance(amount, Decimal):
+            raise InvalidAmountError(amount=amount)
+
+        if not amount.is_finite():
+            raise InvalidAmountError(amount=amount)
+
+        if amount <= Decimal("0.00"):
+            raise InvalidAmountError(amount=amount)
 
 
     @abstractmethod
     def _validate_withdrawal(self, amount: Decimal) -> None:
         # heirs return their own verdict
         raise NotImplementedError
+
+
+    def _on_withdrawal(self, amount: Decimal) -> None:
+        # heirs do their own actions
+        pass
