@@ -4,15 +4,18 @@ from decimal import Decimal
 
 from src.exceptions import InvalidAmountError
 
+from enum import StrEnum
+
 
 class BaseAccount(ABC):
-    __slots__ = ('__account_id', '__owner', '__balance', '__transaction_history')
+    __slots__ = ('__account_id', '__owner', '__balance', '__transaction_history', '__status')
 
 
     def __init__(self, account_id: str, owner: str, balance: Decimal = Decimal("0.00")):
         self.__account_id = account_id
         self.__owner = owner
         self.__balance = balance
+        self.__status = AccountStatus.ACTIVE
 
 
     @property
@@ -62,3 +65,10 @@ class BaseAccount(ABC):
     def _on_withdrawal(self, amount: Decimal) -> None:
         # heirs do their own actions
         pass
+
+
+class AccountStatus(StrEnum):
+    ACTIVE = "active"
+    FROZEN = "frozen"
+    BLOCKED = "blocked"
+    CLOSED = "closed"

@@ -4,8 +4,7 @@
     <list default="true" id="e4f3a295-e465-4abd-a070-f584ea2ab363" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/domain/base_account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/base_account.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/checking_account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/checking_account.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/savings_account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/savings_account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/exceptions.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

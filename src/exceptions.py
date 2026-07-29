@@ -2,6 +2,8 @@ from decimal import Decimal
 
 from datetime import datetime
 
+from src.domain.base_account import AccountStatus
+
 
 class BankError(Exception):
     # base exception for all errors
@@ -61,3 +63,13 @@ class WithdrawalLimitExceededError(BankError):
 class InvalidTransactionError(BankError):
     # soon
     pass
+
+
+class InvalidAccountStatusTransitionError(BankError):
+    # invalid transition from one status to another
+    def __init__(self, from_status: AccountStatus, to_status: AccountStatus) -> None:
+        self.from_status = from_status
+        self.to_status = to_status
+        super().__init__(
+            f"Invalid account status transition: {self.from_status.value} -> {self.to_status.value}."
+        )
