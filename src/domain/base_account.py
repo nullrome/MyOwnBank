@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from decimal import Decimal
 
-from src.exceptions import InvalidAmountError
+from src.exceptions import InvalidAmountError, InvalidAccountStatusTransitionError
 
 from enum import StrEnum
 
@@ -31,6 +31,11 @@ class BaseAccount(ABC):
     @property
     def balance(self) -> Decimal:
         return self.__balance
+
+
+    @property
+    def status(self) -> str:
+        return self.__status
 
 
     def deposit(self, amount: Decimal) -> None:
@@ -62,9 +67,42 @@ class BaseAccount(ABC):
         raise NotImplementedError
 
 
+    @abstractmethod
+    def _validate_closing(self) -> None:
+        pass
+
+
     def _on_withdrawal(self, amount: Decimal) -> None:
         # heirs do their own actions
         pass
+
+
+    def freeze(self) -> None:
+        if self.__status in (AccountStatus.ACTIVE, AccountStatus.BLOCKED):
+            self.__status = AccountStatus.FROZEN
+            return
+        raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.FROZEN)
+
+
+    def block(self) -> None:
+        if self.__status in (AccountStatus.ACTIVE, AccountStatus.FROZEN):
+            self.__status = AccountStatus.BLOCKED
+            return
+        raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.BLOCKED)
+
+
+    def activate(self) -> None:
+        if self.__status in (AccountStatus.BLOCKED, AccountStatus.FROZEN):
+            self.__status = AccountStatus.ACTIVE
+            return
+        raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.ACTIVE)
+
+
+    def close(self) -> None:
+        if self.__status == AccountStatus.BLOCKED:
+            raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.BLOCKED)
+        self._validate_closing()
+        self.__status = AccountStatus.BLOCKED
 
 
 class AccountStatus(StrEnum):
