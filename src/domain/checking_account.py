@@ -19,4 +19,4 @@ class CheckingAccount(BaseAccount):
 
     def _validate_closing(self) -> None:
         if self.balance != Decimal("0.00"):
-            raise AccountNotEmptyError(self.balance)
+            raise AccountNotEmptyError(balance=self.balance)
