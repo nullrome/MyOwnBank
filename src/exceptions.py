@@ -82,3 +82,13 @@ class AccountNotEmptyError(BankError):
         super().__init__(
             f"Cannot close account with balance with non-zero balance: {self.balance:.2f}."
         )
+
+
+class AccountOperationNotAllowedError(BankError):
+    # now operation is not allowed
+    def __init__(self, operation: str, status: AccountStatus) -> None:
+        self.operation = operation
+        self.status = status
+        super().__init__(
+            f'Operation "{self.operation}" is not allowed for account in "{self.status}" status.'
+        )

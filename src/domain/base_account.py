@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from decimal import Decimal
 
-from src.exceptions import InvalidAmountError, InvalidAccountStatusTransitionError
+from src.exceptions import InvalidAmountError, InvalidAccountStatusTransitionError, AccountOperationNotAllowedError
 
 from enum import StrEnum
 
@@ -34,16 +34,20 @@ class BaseAccount(ABC):
 
 
     @property
-    def status(self) -> str:
+    def status(self) -> AccountStatus:
         return self.__status
 
 
     def deposit(self, amount: Decimal) -> None:
+        if self.status in (AccountStatus.BLOCKED, AccountStatus.CLOSED):
+            raise AccountOperationNotAllowedError(operation="deposit", status=self.status)
         self._validate_amount(amount=amount)
         self.__balance += amount
 
 
     def withdraw(self, amount: Decimal) -> None:
+        if self.status in (AccountStatus.BLOCKED, AccountStatus.CLOSED):
+            raise AccountOperationNotAllowedError(operation="withdraw", status=self.status)
         self._validate_amount(amount=amount)
         self._validate_withdrawal(amount=amount)
         self.__balance -= amount
@@ -53,17 +57,15 @@ class BaseAccount(ABC):
     def _validate_amount(self, amount: Decimal) -> None:
         if not isinstance(amount, Decimal):
             raise InvalidAmountError(amount=amount)
-
         if not amount.is_finite():
             raise InvalidAmountError(amount=amount)
-
         if amount <= Decimal("0.00"):
             raise InvalidAmountError(amount=amount)
 
 
     @abstractmethod
     def _validate_withdrawal(self, amount: Decimal) -> None:
-        # heirs return their own verdict
+        # heirs return their own
         raise NotImplementedError
 
 
