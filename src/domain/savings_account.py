@@ -2,7 +2,7 @@ from src.domain.base_account import BaseAccount
 
 from decimal import Decimal
 
-from src.exceptions import InvalidInterestRateError, WithdrawalLimitExceededError, InsufficientFundsError
+from src.exceptions import InvalidInterestRateError, WithdrawalLimitExceededError, InsufficientFundsError, AccountNotEmptyError
 
 
 class SavingsAccount(BaseAccount):
@@ -51,6 +51,11 @@ class SavingsAccount(BaseAccount):
 
         if self.balance < amount:
             raise InsufficientFundsError(account_id=self.account_id, balance=self.balance, requested=amount)
+
+
+    def _validate_closing(self) -> None:
+        if self.balance != Decimal("0.00"):
+            raise AccountNotEmptyError(balance=self.balance)
 
 
     def _on_withdrawal(self, amount: Decimal) -> None:
