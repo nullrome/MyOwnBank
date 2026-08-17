@@ -73,3 +73,12 @@ class InvalidAccountStatusTransitionError(BankError):
         super().__init__(
             f"Invalid account status transition: {self.from_status.value} -> {self.to_status.value}."
         )
+
+
+class AccountNotEmptyError(BankError):
+    # impossibility of account closing
+    def __init__(self, balance: Decimal) -> None:
+        self.balance = balance
+        super().__init__(
+            f"Cannot close account with balance with non-zero balance: {self.balance:.2f}."
+        )

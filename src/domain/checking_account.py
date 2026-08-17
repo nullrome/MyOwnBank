@@ -2,7 +2,7 @@ from src.domain.base_account import BaseAccount
 
 from decimal import Decimal
 
-from src.exceptions import InsufficientFundsError
+from src.exceptions import InsufficientFundsError, AccountNotEmptyError
 
 
 class CheckingAccount(BaseAccount):
@@ -15,3 +15,8 @@ class CheckingAccount(BaseAccount):
     def _validate_withdrawal(self, amount: Decimal) -> None:
         if self.balance < amount:
             raise InsufficientFundsError(account_id=self.account_id, balance=self.balance, requested=amount)
+
+
+    def _validate_closing(self) -> None:
+        if self.balance != Decimal("0.00"):
+            raise AccountNotEmptyError(self.balance)
