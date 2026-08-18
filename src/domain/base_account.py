@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from src.exceptions import InvalidAmountError, InvalidAccountStatusTransitionError, AccountOperationNotAllowedError
 
-from enum import StrEnum
+from src.domain.account_status import AccountStatus
 
 
 class BaseAccount(ABC):
@@ -105,10 +105,3 @@ class BaseAccount(ABC):
             raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.BLOCKED)
         self._validate_closing()
         self.__status = AccountStatus.BLOCKED
-
-
-class AccountStatus(StrEnum):
-    ACTIVE = "active"
-    FROZEN = "frozen"
-    BLOCKED = "blocked"
-    CLOSED = "closed"

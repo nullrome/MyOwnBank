@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from datetime import datetime
 
-from src.domain.base_account import AccountStatus
+from src.domain.account_status import AccountStatus
 
 
 class BankError(Exception):
