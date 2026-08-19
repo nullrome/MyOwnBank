@@ -3,7 +3,6 @@ import pytest
 from decimal import Decimal
 
 from src.domain.account_status import AccountStatus
-from src.domain.base_account import BaseAccount
 from src.domain.checking_account import CheckingAccount
 from src.domain.savings_account import SavingsAccount
 from src.exceptions import (
@@ -16,7 +15,7 @@ from src.exceptions import (
 )
 
 
-def test_new_checking_account_is_active():
+def test_new_checking_account_is_active() -> None:
     account = CheckingAccount(
         account_id='1',
         owner='Roman',
@@ -26,7 +25,7 @@ def test_new_checking_account_is_active():
     assert account.status == AccountStatus.ACTIVE
 
 
-def test_checking_account_can_be_frozen():
+def test_active_checking_account_can_be_frozen() -> None:
     account = CheckingAccount(
         account_id='1',
         owner='Roman',
@@ -38,7 +37,7 @@ def test_checking_account_can_be_frozen():
     assert account.status == AccountStatus.FROZEN
 
 
-def test_checking_account_can_be_blocked():
+def test_active_checking_account_can_be_blocked() -> None:
     account = CheckingAccount(
         account_id='1',
         owner='Roman',
@@ -50,7 +49,7 @@ def test_checking_account_can_be_blocked():
     assert account.status == AccountStatus.BLOCKED
 
 
-def test_frozen_checking_account_can_be_activated():
+def test_frozen_checking_account_can_be_activated() -> None:
     account = CheckingAccount(
         account_id='1',
         owner='Roman',
@@ -63,7 +62,7 @@ def test_frozen_checking_account_can_be_activated():
     assert account.status == AccountStatus.ACTIVE
 
 
-def test_closed_checking_account_cannot_be_activated():
+def test_closed_checking_account_cannot_be_activated() -> None:
     account = CheckingAccount(
         account_id='1',
         owner='Roman',
@@ -76,7 +75,7 @@ def test_closed_checking_account_cannot_be_activated():
         account.activate()
 
 
-def test_not_empty_checking_account_cannot_be_closed():
+def test_not_empty_checking_account_cannot_be_closed() -> None:
     account = CheckingAccount(
         account_id='1',
         owner='Roman',
@@ -87,7 +86,57 @@ def test_not_empty_checking_account_cannot_be_closed():
         account.close()
 
 
-def test_deposit_increase_checkings_account_balance():
+def test_active_checking_account_cannot_be_activated() -> None:
+    account = CheckingAccount(
+        account_id='1',
+        owner='Roman',
+        balance=Decimal("100.00")
+    )
+
+    with pytest.raises(InvalidAccountStatusTransitionError):
+        account.activate()
+
+
+def test_frozen_checking_account_cannot_be_frozen() -> None:
+    account = CheckingAccount(
+        account_id='1',
+        owner='Roman',
+        balance=Decimal("100.00")
+    )
+
+    account.freeze()
+
+    with pytest.raises(InvalidAccountStatusTransitionError):
+        account.freeze()
+
+
+def test_frozen_checking_account_can_be_blocked() -> None:
+    account = CheckingAccount(
+        account_id='1',
+        owner='Roman',
+        balance=Decimal("100.00")
+    )
+
+    account.freeze()
+    account.block()
+
+    assert account.status == AccountStatus.BLOCKED
+
+
+def test_blocked_checking_account_cannot_be_activated() -> None:
+    account = CheckingAccount(
+        account_id='1',
+        owner='Roman',
+        balance=Decimal("100.00")
+    )
+
+    account.block()
+
+    with pytest.raises(InvalidAccountStatusTransitionError):
+        account.activate()
+
+
+def test_deposit_increase_checkings_account_balance() -> None:
     account = CheckingAccount(
         account_id='1',
         owner='Roman',
@@ -99,7 +148,7 @@ def test_deposit_increase_checkings_account_balance():
     assert account.balance == Decimal("200.00")
 
 
-def test_withdrawal_decreases_checkings_account_balance():
+def test_withdrawal_decreases_checkings_account_balance() -> None:
     account = CheckingAccount(
         account_id='1',
         owner='Roman',

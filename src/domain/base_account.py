@@ -94,7 +94,7 @@ class BaseAccount(ABC):
 
 
     def activate(self) -> None:
-        if self.__status in (AccountStatus.BLOCKED, AccountStatus.FROZEN):
+        if self.__status == AccountStatus.FROZEN:
             self.__status = AccountStatus.ACTIVE
             return
         raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.ACTIVE)
