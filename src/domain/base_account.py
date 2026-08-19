@@ -104,4 +104,4 @@ class BaseAccount(ABC):
         if self.__status == AccountStatus.BLOCKED:
             raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.BLOCKED)
         self._validate_closing()
-        self.__status = AccountStatus.BLOCKED
+        self.__status = AccountStatus.CLOSED
