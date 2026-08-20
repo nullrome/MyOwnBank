@@ -201,9 +201,9 @@ def test_blocked_account_cannot_be_activated():
 [x] FROZEN  + freeze()   = exception
 [x] FROZEN  + block()    = BLOCKED
 
-[ ] BLOCKED + activate() = exception
-[ ] BLOCKED + freeze()   = exception
-[ ] BLOCKED + block()    = exception
+[x] BLOCKED + activate() = exception
+[x] BLOCKED + freeze()   = exception
+[x] BLOCKED + block()    = exception
 ```
 
 Это именно **100% покрытие матрицы переходов состояний**, а не утверждение о 100% `line/branch coverage` всего класса `Account`.

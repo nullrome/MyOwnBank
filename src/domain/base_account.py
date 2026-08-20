@@ -80,7 +80,7 @@ class BaseAccount(ABC):
 
 
     def freeze(self) -> None:
-        if self.__status in (AccountStatus.ACTIVE, AccountStatus.BLOCKED):
+        if self.__status == AccountStatus.ACTIVE:
             self.__status = AccountStatus.FROZEN
             return
         raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.FROZEN)

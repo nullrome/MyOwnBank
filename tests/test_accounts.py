@@ -136,6 +136,32 @@ def test_blocked_checking_account_cannot_be_activated() -> None:
         account.activate()
 
 
+def test_blocked_checking_account_cannot_be_frozen() -> None:
+    account = CheckingAccount(
+        account_id='1',
+        owner='Roman',
+        balance=Decimal("100.00")
+    )
+
+    account.block()
+
+    with pytest.raises(InvalidAccountStatusTransitionError):
+        account.freeze()
+
+
+def test_blocked_checking_account_cannot_be_blocked() -> None:
+    account = CheckingAccount(
+        account_id='1',
+        owner='Roman',
+        balance=Decimal("100.00")
+    )
+
+    account.block()
+
+    with pytest.raises(InvalidAccountStatusTransitionError):
+        account.block()
+
+
 def test_deposit_increase_checkings_account_balance() -> None:
     account = CheckingAccount(
         account_id='1',
