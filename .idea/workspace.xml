@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4f3a295-e465-4abd-a070-f584ea2ab363" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain/base_account.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain/base_account.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/account_state_tests_checklist.md" beforeDir="false" afterPath="$PROJECT_DIR$/tests/account_state_tests_checklist.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_accounts.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_accounts.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
