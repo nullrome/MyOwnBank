@@ -63,31 +63,19 @@ def test_frozen_account_can_deposit(checking_account) -> None:
     assert checking_account.status == AccountStatus.FROZEN
 
 
-def test_blocked_account_cannot_deposit() -> None:
-    account = CheckingAccount(
-        account_id='1',
-        owner='Roman',
-        balance=Decimal("100.00")
-    )
-
-    account.block()
+def test_blocked_account_cannot_deposit(checking_account) -> None:
+    checking_account.block()
 
     with pytest.raises(AccountOperationNotAllowedError):
-        account.deposit(Decimal("50.00"))
+        checking_account.deposit(Decimal("50.00"))
 
-    assert account.balance == Decimal("100.00")
+    assert checking_account.balance == Decimal("100.00")
 
 
-def test_closed_account_cannot_deposit() -> None:
-    account = CheckingAccount(
-        account_id='1',
-        owner='Roman',
-        balance=Decimal("0.00")
-    )
-
-    account.close()
+def test_closed_account_cannot_deposit(checking_account) -> None:
+    checking_account.close()
 
     with pytest.raises(AccountOperationNotAllowedError):
-        account.deposit(Decimal("100.00"))
+        checking_account.deposit(Decimal("100.00"))
 
-    assert account.balance == Decimal("0.00")
+    assert checking_account.balance == Decimal("0.00")
