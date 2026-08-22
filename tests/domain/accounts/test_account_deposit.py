@@ -11,6 +11,15 @@ from src.domain.account_status import AccountStatus
 from decimal import Decimal
 
 
+@pytest.fixture
+def checking_account() -> CheckingAccount:
+    return CheckingAccount(
+        account_id="1",
+        owner="Roman",
+        balance=Decimal("100.00")
+)
+
+
 @pytest.mark.parametrize(
     "invalid_amount",
     [
@@ -20,15 +29,6 @@ from decimal import Decimal
         Decimal("Infinity"),
         Decimal("-Infinity"),
     ],
-)
-
-
-@pytest.fixture
-def checking_account() -> CheckingAccount:
-    return CheckingAccount(
-        account_id="1",
-        owner="Roman",
-        balance=Decimal("100.00")
 )
 
 
