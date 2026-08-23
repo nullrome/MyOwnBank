@@ -14,6 +14,7 @@ class BaseAccount(ABC):
     def __init__(self, account_id: str, owner: str, balance: Decimal = Decimal("0.00")):
         self.__account_id = account_id
         self.__owner = owner
+        self._validate_balance(balance=balance)
         self.__balance = balance
         self.__status = AccountStatus.ACTIVE
 
@@ -61,6 +62,15 @@ class BaseAccount(ABC):
             raise InvalidAmountError(amount=amount)
         if amount <= Decimal("0.00"):
             raise InvalidAmountError(amount=amount)
+
+
+    def _validate_balance(self, balance: Decimal) -> None:
+        if not isinstance(balance, Decimal):
+            raise InvalidAmountError(amount=balance)
+        if not balance.is_finite():
+            raise InvalidAmountError(amount=balance)
+        if balance < Decimal("0.00"):
+            raise InvalidAmountError(amount=balance)
 
 
     @abstractmethod

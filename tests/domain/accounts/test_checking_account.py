@@ -2,10 +2,14 @@ import pytest
 
 from decimal import Decimal
 
-from src.exceptions import InvalidAmountError, InsufficientFundsError, AccountOperationNotAllowedError
+from src.exceptions import (InvalidAmountError,
+                            InsufficientFundsError,
+                            AccountOperationNotAllowedError,
+                            AccountNotEmptyError)
 
 from src.domain.checking_account import CheckingAccount
 from src.domain.account_status import AccountStatus
+
 
 @pytest.fixture
 def checking_account() -> CheckingAccount:
@@ -116,3 +120,46 @@ def test_closed_account_cannot_withdraw() -> None:
 
     assert checking_account.balance == Decimal("0.00")
     assert checking_account.status == AccountStatus.CLOSED
+
+
+def test_zero_balance_lets_to_close_account() -> None:
+    account = CheckingAccount(
+        account_id="1",
+        owner="Roman"
+    )
+
+    account.close()
+
+    assert account.status == AccountStatus.CLOSED
+
+
+def test_non_zero_balance_does_not_let_to_close_account(checking_account) -> None:
+    with pytest.raises(AccountNotEmptyError):
+        checking_account.close()
+
+    assert checking_account.status == AccountStatus.ACTIVE
+    assert checking_account.balance == Decimal("100.00")
+
+
+def test_after_withdrawal_to_zero_account_can_be_closed(checking_account) -> None:
+    checking_account.withdraw(Decimal("100.00"))
+
+    checking_account.close()
+
+    assert checking_account.status == AccountStatus.CLOSED
+
+
+def test_after_deposit_and_withdraw_to_zero_account_can_be_closed(checking_account) -> None:
+    checking_account.deposit(Decimal("100.00"))
+    checking_account.withdraw(Decimal("200.00"))
+
+    checking_account.close()
+
+    assert checking_account.status == AccountStatus.CLOSED
+
+
+def test_properties_saved_correctly_after_creation(checking_account) -> None:
+    assert checking_account.account_id == "1"
+    assert checking_account.owner == "Roman"
+    assert checking_account.balance == Decimal("100.00")
+    assert checking_account.status == AccountStatus.ACTIVE
