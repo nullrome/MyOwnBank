@@ -39,7 +39,7 @@ class SavingsAccount(BaseAccount):
         if not interest_rate.is_finite():
             raise InvalidInterestRateError(interest_rate=interest_rate)
 
-        if interest_rate < Decimal("0.00"):
+        if interest_rate <= Decimal("0.00"):
             raise InvalidInterestRateError(interest_rate=interest_rate)
 
         self.__interest_rate = interest_rate

@@ -100,24 +100,24 @@
 
 ### Валидные значения
 
-- [ ] `Decimal("0.00")`.
-- [ ] Положительная ставка.
-- [ ] Ставка сохраняется корректно.
-- [ ] Setter меняет валидную ставку на другую валидную.
+- [x] `Decimal("0.00")`.
+- [x] Положительная ставка.
+- [x] Ставка сохраняется корректно.
+- [x] Setter меняет валидную ставку на другую валидную.
 
 ### InvalidInterestRateError
 
-- [ ] отрицательная ставка
-- [ ] NaN
-- [ ] Infinity
-- [ ] -Infinity
-- [ ] int
-- [ ] float
-- [ ] str
-- [ ] None
+- [x] отрицательная ставка
+- [x] NaN
+- [x] Infinity
+- [x] -Infinity
+- [x] int
+- [x] float
+- [x] str
+- [x] None
 
 Дополнительно:
-- [ ] после неудачного setter старая ставка остаётся прежней.
+- [x] после неудачного setter старая ставка остаётся прежней.
 
 ---
 
@@ -125,43 +125,43 @@
 
 Текущий лимит: `MAX_WITHDRAWALS_PER_MONTH = 3`.
 
-- [ ] Новый Savings имеет `withdrawals_this_month == 0`.
-- [ ] После 1-го успешного withdraw счётчик == 1.
-- [ ] После 2-го == 2.
-- [ ] После 3-го == 3.
-- [ ] 4-й withdraw вызывает `WithdrawalLimitExceededError`.
-- [ ] После 4-й неудачной попытки счётчик остаётся 3.
-- [ ] После 4-й неудачной попытки баланс не меняется.
+- [x] Новый Savings имеет `withdrawals_this_month == 0`.
+- [x] После 1-го успешного withdraw счётчик == 1.
+- [x] После 2-го == 2.
+- [x] После 3-го == 3.
+- [x] 4-й withdraw вызывает `WithdrawalLimitExceededError`.
+- [x] После 4-й неудачной попытки счётчик остаётся 3.
+- [x] После 4-й неудачной попытки баланс не меняется.
 
 ### Важные edge cases
 
-- [ ] `InsufficientFundsError` не увеличивает счётчик.
-- [ ] `InvalidAmountError` не увеличивает счётчик.
-- [ ] Ошибка статуса не увеличивает счётчик.
-- [ ] `deposit()` не влияет на счётчик.
+- [x] `InsufficientFundsError` не увеличивает счётчик.
+- [x] `InvalidAmountError` не увеличивает счётчик.
+- [x] Ошибка статуса не увеличивает счётчик.
+- [x] `deposit()` не влияет на счётчик.
 
 ---
 
 ## 7. Денежные операции `SavingsAccount`
 
-- [ ] Успешный deposit.
-- [ ] Успешный withdraw.
-- [ ] Снятие всего баланса.
-- [ ] `InsufficientFundsError`.
-- [ ] Невалидные суммы.
-- [ ] `BLOCKED` запрещает денежные операции.
-- [ ] `CLOSED` запрещает денежные операции.
-- [ ] Неудачные операции не меняют баланс.
+- [x] Успешный deposit.
+- [x] Успешный withdraw.
+- [x] Снятие всего баланса.
+- [x] `InsufficientFundsError`.
+- [x] Невалидные суммы.
+- [x] `BLOCKED` запрещает денежные операции.
+- [x] `CLOSED` запрещает денежные операции.
+- [x] Неудачные операции не меняют баланс.
 
 ---
 
 ## 8. Закрытие `SavingsAccount`
 
-- [ ] Нулевой баланс позволяет закрыть.
-- [ ] Ненулевой баланс вызывает `AccountNotEmptyError`.
-- [ ] После ошибки объект не мутирует.
-- [ ] После снятия остатка до нуля счёт можно закрыть.
-- [ ] `withdrawals_this_month` не меняется из-за `close()`.
+- [x] Нулевой баланс позволяет закрыть.
+- [x] Ненулевой баланс вызывает `AccountNotEmptyError`.
+- [x] После ошибки объект не мутирует.
+- [x] После снятия остатка до нуля счёт можно закрыть.
+- [x] `withdrawals_this_month` не меняется из-за `close()`.
 
 ---
 
@@ -180,14 +180,14 @@ status
 Проверить:
 
 - [ ] `BLOCKED` + invalid amount => ошибка статуса.
-- [ ] `CLOSED` + invalid amount => ошибка статуса.
-- [ ] `ACTIVE` + invalid amount => `InvalidAmountError`.
-- [ ] amount > balance => `InsufficientFundsError`.
-- [ ] Для Savings после достижения лимита зафиксировать тестом приоритет лимита над другими account-specific проверками.
+- [x] `CLOSED` + invalid amount => ошибка статуса.
+- [x] `ACTIVE` + invalid amount => `InvalidAmountError`.
+- [x] amount > balance => `InsufficientFundsError`.
+- [x] Для Savings после достижения лимита зафиксировать тестом приоритет лимита над другими account-specific проверками.
 
 Для `deposit()`:
-- [ ] `BLOCKED` + invalid amount => сначала ошибка статуса.
-- [ ] `CLOSED` + invalid amount => сначала ошибка статуса.
+- [x] `BLOCKED` + invalid amount => сначала ошибка статуса.
+- [x] `CLOSED` + invalid amount => сначала ошибка статуса.
 
 ---
 
@@ -195,10 +195,10 @@ status
 
 После любой неудачной финансовой операции проверять:
 
-- [ ] `balance` не изменился.
-- [ ] `status` не изменился.
-- [ ] `withdrawals_this_month` не изменился.
-- [ ] `interest_rate` не изменился после неудачного setter.
+- [x] `balance` не изменился.
+- [x] `status` не изменился.
+- [x] `withdrawals_this_month` не изменился.
+- [x] `interest_rate` не изменился после неудачного setter.
 
 ---
 
@@ -206,10 +206,10 @@ status
 
 После написания базовых тестов вручную параметризовать:
 
-- [ ] invalid amounts для deposit.
-- [ ] invalid amounts для withdraw.
-- [ ] invalid interest rates.
-- [ ] операции на `BLOCKED/CLOSED`.
+- [x] invalid amounts для deposit.
+- [x] invalid amounts для withdraw.
+- [x] invalid interest rates.
+- [x] операции на `BLOCKED/CLOSED`.
 
 Пример:
 
@@ -233,10 +233,10 @@ def test_invalid_deposit_amounts_raise_error(amount):
 
 Когда тестов станет много:
 
-- [ ] fixture активного `CheckingAccount`.
-- [ ] fixture пустого `CheckingAccount`.
-- [ ] fixture `SavingsAccount`.
-- [ ] не усложнять fixture-зависимости.
+- [x] fixture активного `CheckingAccount`.
+- [x] fixture пустого `CheckingAccount`.
+- [x] fixture `SavingsAccount`.
+- [x] не усложнять fixture-зависимости.
 
 ---
 
@@ -318,13 +318,13 @@ DONE: AccountStatus migrations
 
 ## Definition of Done перед переходом к Transactions
 
-- [ ] Status transitions закрыты.
-- [ ] `deposit()` полностью покрыт.
-- [ ] `CheckingAccount.withdraw()` покрыт.
-- [ ] `CheckingAccount.close()` покрыт.
-- [ ] `InvalidAmountError` edge cases покрыты.
-- [ ] `InsufficientFundsError` покрыт.
-- [ ] `AccountOperationNotAllowedError` покрыт.
+- [x] Status transitions закрыты.
+- [x] `deposit()` полностью покрыт.
+- [x] `CheckingAccount.withdraw()` покрыт.
+- [x] `CheckingAccount.close()` покрыт.
+- [x] `InvalidAmountError` edge cases покрыты.
+- [x] `InsufficientFundsError` покрыт.
+- [x] `AccountOperationNotAllowedError` покрыт.
 - [ ] `SavingsAccount.interest_rate` покрыт.
 - [ ] Лимит 3 снятий Savings покрыт.
 - [ ] Неудачные операции не мутируют объект.
