@@ -1,9 +1,9 @@
 import pytest
 
 from src.exceptions import (
-        InvalidAmountError,
-        AccountOperationNotAllowedError
-)
+                            InvalidAmountError,
+                            AccountOperationNotAllowedError
+                            )
 
 from src.domain.checking_account import CheckingAccount
 from src.domain.account_status import AccountStatus
