@@ -1,11 +1,11 @@
-from src.domain.base_account import BaseAccount
+from src.domain.balance_account import BalanceAccount
 
 from decimal import Decimal
 
 from src.exceptions import InvalidInterestRateError, WithdrawalLimitExceededError, InsufficientFundsError, AccountNotEmptyError
 
 
-class SavingsAccount(BaseAccount):
+class SavingsAccount(BalanceAccount):
     __slots__ = ('__interest_rate', '__withdrawal_this_month')
 
     MAX_WITHDRAWALS_PER_MONTH = 3

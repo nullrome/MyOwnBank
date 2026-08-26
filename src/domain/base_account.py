@@ -2,20 +2,22 @@ from abc import ABC, abstractmethod
 
 from decimal import Decimal
 
-from src.exceptions import InvalidAmountError, InvalidAccountStatusTransitionError, AccountOperationNotAllowedError
+from src.exceptions import InvalidAmountError, InvalidAccountStatusTransitionError
 
 from src.domain.account_status import AccountStatus
 
 
 class BaseAccount(ABC):
-    __slots__ = ('__account_id', '__owner', '__balance', '__transaction_history', '__status')
+    __slots__ = ('__account_id', '__owner', '__status')
 
 
-    def __init__(self, account_id: str, owner: str, balance: Decimal = Decimal("0.00")):
+    def __init__(
+            self,
+            account_id: str,
+            owner: str
+    ) -> None:
         self.__account_id = account_id
         self.__owner = owner
-        self._validate_balance(balance=balance)
-        self.__balance = balance
         self.__status = AccountStatus.ACTIVE
 
 
@@ -30,62 +32,12 @@ class BaseAccount(ABC):
 
 
     @property
-    def balance(self) -> Decimal:
-        return self.__balance
-
-
-    @property
     def status(self) -> AccountStatus:
         return self.__status
 
 
-    def deposit(self, amount: Decimal) -> None:
-        if self.status in (AccountStatus.BLOCKED, AccountStatus.CLOSED):
-            raise AccountOperationNotAllowedError(operation="deposit", status=self.status)
-        self._validate_amount(amount=amount)
-        self.__balance += amount
-
-
-    def withdraw(self, amount: Decimal) -> None:
-        if self.status in (AccountStatus.BLOCKED, AccountStatus.CLOSED):
-            raise AccountOperationNotAllowedError(operation="withdraw", status=self.status)
-        self._validate_amount(amount=amount)
-        self._validate_withdrawal(amount=amount)
-        self.__balance -= amount
-        self._on_withdrawal(amount=amount)
-
-
-    def _validate_amount(self, amount: Decimal) -> None:
-        if not isinstance(amount, Decimal):
-            raise InvalidAmountError(amount=amount)
-        if not amount.is_finite():
-            raise InvalidAmountError(amount=amount)
-        if amount <= Decimal("0.00"):
-            raise InvalidAmountError(amount=amount)
-
-
-    def _validate_balance(self, balance: Decimal) -> None:
-        if not isinstance(balance, Decimal):
-            raise InvalidAmountError(amount=balance)
-        if not balance.is_finite():
-            raise InvalidAmountError(amount=balance)
-        if balance < Decimal("0.00"):
-            raise InvalidAmountError(amount=balance)
-
-
-    @abstractmethod
-    def _validate_withdrawal(self, amount: Decimal) -> None:
-        # heirs return their own
-        raise NotImplementedError
-
-
     @abstractmethod
     def _validate_closing(self) -> None:
-        pass
-
-
-    def _on_withdrawal(self, amount: Decimal) -> None:
-        # heirs do their own actions
         pass
 
 

@@ -1,11 +1,11 @@
-from src.domain.base_account import BaseAccount
+from src.domain.balance_account import BalanceAccount
 
 from decimal import Decimal
 
 from src.exceptions import InsufficientFundsError, AccountNotEmptyError
 
 
-class CheckingAccount(BaseAccount):
+class CheckingAccount(BalanceAccount):
     __slots__ = ()
 
     def __init__(self, account_id: str, owner: str, balance: Decimal = Decimal("0.00")):
