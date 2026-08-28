@@ -92,3 +92,22 @@ class AccountOperationNotAllowedError(BankError):
         super().__init__(
             f'Operation "{self.operation}" is not allowed for account in "{self.status}" status.'
         )
+
+
+class InvalidCreditLimitError(BankError):
+    # invalid credit limit
+    def __init__(self, credit_limit: Decimal) -> None:
+        self.credit_limit = credit_limit
+        super().__init__(
+            f'Invalid credit limit: {self.credit_limit}.'
+            f'Non-negative Decimal number expected.'
+        )
+
+
+class DebtIsNotPaidError(BankError):
+    # user must pay in addition
+    def __init__(self, debt: Decimal) -> None:
+        self.debt = debt
+        super().__init__(
+            f'User has not paid his debt: {self.debt}.'
+        )

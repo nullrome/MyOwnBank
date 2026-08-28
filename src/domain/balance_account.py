@@ -36,7 +36,8 @@ class BalanceAccount(BaseAccount, ABC):
         pass
 
 
-    def _validate_balance(self, balance: Decimal) -> None:
+    @staticmethod
+    def _validate_balance(balance: Decimal) -> None:
         if not isinstance(balance, Decimal):
             raise InvalidAmountError(amount=balance)
         if not balance.is_finite():
@@ -45,7 +46,8 @@ class BalanceAccount(BaseAccount, ABC):
             raise InvalidAmountError(amount=balance)
 
 
-    def _validate_amount(self, amount: Decimal) -> None:
+    @staticmethod
+    def _validate_amount(amount: Decimal) -> None:
         if not isinstance(amount, Decimal):
             raise InvalidAmountError(amount=amount)
         if not amount.is_finite():

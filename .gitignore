@@ -1,7 +1,11 @@
-ROADMAP.md
-
 .venv/
 
 .idea/
 
 .DS_Store/
+
+
+.coverage
+
+
+htmlcov/

@@ -35,20 +35,16 @@ class SavingsAccount(BalanceAccount):
     def interest_rate(self, interest_rate: Decimal) -> None:
         if not isinstance(interest_rate, Decimal):
             raise InvalidInterestRateError(interest_rate=interest_rate)
-
         if not interest_rate.is_finite():
             raise InvalidInterestRateError(interest_rate=interest_rate)
-
         if interest_rate <= Decimal("0.00"):
             raise InvalidInterestRateError(interest_rate=interest_rate)
-
         self.__interest_rate = interest_rate
 
 
     def _validate_withdrawal(self, amount: Decimal) -> None:
         if self.__withdrawal_this_month >= self.MAX_WITHDRAWALS_PER_MONTH:
             raise WithdrawalLimitExceededError(owner=self.owner, withdrawals_this_month=self.withdrawals_this_month)
-
         if self.balance < amount:
             raise InsufficientFundsError(account_id=self.account_id, balance=self.balance, requested=amount)
 
