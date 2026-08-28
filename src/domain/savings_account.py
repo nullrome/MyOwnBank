@@ -2,7 +2,11 @@ from src.domain.balance_account import BalanceAccount
 
 from decimal import Decimal
 
-from src.exceptions import InvalidInterestRateError, WithdrawalLimitExceededError, InsufficientFundsError, AccountNotEmptyError
+from src.exceptions import (InvalidInterestRateError,
+                            WithdrawalLimitExceededError,
+                            InsufficientFundsError,
+                            AccountNotEmptyError
+                            )
 
 
 class SavingsAccount(BalanceAccount):

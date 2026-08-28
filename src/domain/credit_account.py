@@ -1,7 +1,12 @@
 from decimal import Decimal
-from idlelib.debugger_r import close_remote_debugger
 
-from src.exceptions import InvalidCreditLimitError, InvalidInterestRateError, DebtIsNotPaidError
+from src.exceptions import (InvalidCreditLimitError,
+                            InvalidInterestRateError,
+                            OutstandingDebtError,
+                            CreditLimitExceededError,
+                            AccountOperationNotAllowedError,
+                            RepaymentExceedsDebtError
+                            )
 
 from src.domain.base_account import BaseAccount
 from src.domain.account_status import AccountStatus
@@ -26,6 +31,7 @@ class CreditAccount(BaseAccount):
         )
         self._validate_credit_limit(credit_limit=credit_limit)
         self.__credit_limit = credit_limit
+
         self._validate_interest_rate(interest_rate=interest_rate)
         self.__interest_rate = interest_rate
         self.__debt = Decimal("0.00")
@@ -55,9 +61,11 @@ class CreditAccount(BaseAccount):
     def _validate_credit_limit(credit_limit: Decimal) -> None:
         if not isinstance(credit_limit, Decimal):
             raise InvalidCreditLimitError(credit_limit=credit_limit)
+
         if not credit_limit.is_finite():
             raise InvalidCreditLimitError(credit_limit=credit_limit)
-        if not credit_limit > Decimal("0.00"):
+
+        if credit_limit <= Decimal("0.00"):
             raise InvalidCreditLimitError(credit_limit=credit_limit)
 
 
@@ -65,13 +73,57 @@ class CreditAccount(BaseAccount):
     def _validate_interest_rate(interest_rate: Decimal) -> None:
         if not isinstance(interest_rate, Decimal):
             raise InvalidInterestRateError(interest_rate=interest_rate)
+
         if not interest_rate.is_finite():
             raise InvalidInterestRateError(interest_rate=interest_rate)
-        if not interest_rate >= Decimal("0.00"):
+
+        if interest_rate < Decimal("0.00"):
             raise InvalidInterestRateError(interest_rate=interest_rate)
+
+
+    def _validate_spending(self, spending_amount: Decimal) -> None:
+        if self.status != AccountStatus.ACTIVE:
+            raise AccountOperationNotAllowedError(
+                operation="spending",
+                status=self.status
+                )
+
+        self._validate_amount(amount=spending_amount)
+
+        if spending_amount > self.available_credit:
+            raise CreditLimitExceededError(
+                                        amount=spending_amount,
+                                        available_credit=self.available_credit
+                                        )
+
+
+    def _validate_repayment(self, repayment_amount: Decimal) -> None:
+        if self.status not in (AccountStatus.ACTIVE, AccountStatus.FROZEN):
+            raise AccountOperationNotAllowedError(
+                operation="repayment",
+                status=self.status
+            )
+
+        self._validate_amount(amount=repayment_amount)
+
+        if repayment_amount > self.__debt:
+            raise RepaymentExceedsDebtError(
+                amount=repayment_amount,
+                debt=self.__debt
+            )
+
+
+    def spend(self, spending_amount: Decimal) -> None:
+        self._validate_spending(spending_amount=spending_amount)
+        self.__debt += spending_amount
+
+
+    def repay(self, repayment_amount: Decimal) -> None:
+        self._validate_repayment(repayment_amount=repayment_amount)
+        self.__debt -= repayment_amount
 
 
     def _validate_closing(self) -> None:
-        if not self.__debt == Decimal("0.00"):
-            raise DebtIsNotPaidError(debt=self.__debt)
+        if self.__debt > Decimal("0.00"):
+            raise OutstandingDebtError(debt=self.__debt)
 

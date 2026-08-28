@@ -36,7 +36,9 @@ class AccountNotFoundError(BankError):
     # account was not found
     def __init__(self, account_id: str):
         self.account_id = account_id
-        super().__init__(f"Account {self.account_id} is not found.")
+        super().__init__(
+            f"Account {self.account_id} is not found."
+        )
 
 
 class InvalidInterestRateError(BankError):
@@ -58,11 +60,6 @@ class WithdrawalLimitExceededError(BankError):
             f"The user has exhausted their withdrawal limit for the month."
             f"User {self.owner} has limit per month: 3. Number of withdrawals in {datetime.now().month}: {self.withdrawals_this_month}."
         )
-
-
-class InvalidTransactionError(BankError):
-    # soon
-    pass
 
 
 class InvalidAccountStatusTransitionError(BankError):
@@ -99,15 +96,36 @@ class InvalidCreditLimitError(BankError):
     def __init__(self, credit_limit: Decimal) -> None:
         self.credit_limit = credit_limit
         super().__init__(
-            f'Invalid credit limit: {self.credit_limit}.'
-            f'Non-negative Decimal number expected.'
+            f'Invalid credit limit: {self.credit_limit!r}.'
+            f'Positive finite Decimal value expected.'
         )
 
 
-class DebtIsNotPaidError(BankError):
+class OutstandingDebtError(BankError):
     # user must pay in addition
     def __init__(self, debt: Decimal) -> None:
         self.debt = debt
         super().__init__(
-            f'User has not paid his debt: {self.debt}.'
+            f"Cannot close credit account with outstanding debt: {self.debt}."
+        )
+
+
+class CreditLimitExceededError(BankError):
+    # user wanna spend more than possible
+    def __init__(self, amount: Decimal, available_credit: Decimal) -> None:
+        self.amount = amount
+        self.available_credit = available_credit
+        super().__init__(
+            f"Credit limit exceeded: requested {self.amount}, "
+            f"available credit is {self.available_credit}."
+        )
+
+
+class RepaymentExceedsDebtError(BankError):
+    # repayment is bigger than user's debt
+    def __init__(self, amount: Decimal, debt: Decimal) -> None:
+        self.amount = amount
+        self.debt = debt
+        super().__init__(
+            f"Repayment amount {self.amount} exceeds outstanding debt {self.debt}."
         )

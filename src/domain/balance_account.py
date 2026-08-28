@@ -5,7 +5,10 @@ from decimal import Decimal
 from src.domain.account_status import AccountStatus
 from src.domain.base_account import BaseAccount
 
-from src.exceptions import AccountOperationNotAllowedError, InvalidAmountError, AccountNotEmptyError
+from src.exceptions import (AccountOperationNotAllowedError,
+                            InvalidAmountError,
+                            AccountNotEmptyError
+                            )
 
 
 class BalanceAccount(BaseAccount, ABC):
@@ -44,16 +47,6 @@ class BalanceAccount(BaseAccount, ABC):
             raise InvalidAmountError(amount=balance)
         if balance < Decimal("0.00"):
             raise InvalidAmountError(amount=balance)
-
-
-    @staticmethod
-    def _validate_amount(amount: Decimal) -> None:
-        if not isinstance(amount, Decimal):
-            raise InvalidAmountError(amount=amount)
-        if not amount.is_finite():
-            raise InvalidAmountError(amount=amount)
-        if amount <= Decimal("0.00"):
-            raise InvalidAmountError(amount=amount)
 
 
     def _on_withdrawal(self, amount: Decimal) -> None:

@@ -41,6 +41,16 @@ class BaseAccount(ABC):
         pass
 
 
+    @staticmethod
+    def _validate_amount(amount: Decimal) -> None:
+        if not isinstance(amount, Decimal):
+            raise InvalidAmountError(amount=amount)
+        if not amount.is_finite():
+            raise InvalidAmountError(amount=amount)
+        if amount <= Decimal("0.00"):
+            raise InvalidAmountError(amount=amount)
+
+
     def freeze(self) -> None:
         if self.__status == AccountStatus.ACTIVE:
             self.__status = AccountStatus.FROZEN
