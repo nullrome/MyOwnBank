@@ -27,6 +27,8 @@ def test_active_checking_account_can_be_frozen() -> None:
         balance=Decimal("100.00")
     )
 
+    print(account.status)
+
     account.freeze()
 
     assert account.status == AccountStatus.FROZEN
