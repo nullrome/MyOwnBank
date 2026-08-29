@@ -54,26 +54,23 @@ class BaseAccount(ABC):
     def freeze(self) -> None:
         if self.__status == AccountStatus.ACTIVE:
             self.__status = AccountStatus.FROZEN
-            return
-        raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.FROZEN)
+        raise InvalidAccountStatusTransitionError(from_status=self.__status, to_status=AccountStatus.FROZEN)
 
 
     def block(self) -> None:
         if self.__status in (AccountStatus.ACTIVE, AccountStatus.FROZEN):
             self.__status = AccountStatus.BLOCKED
-            return
-        raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.BLOCKED)
+        raise InvalidAccountStatusTransitionError(from_status=self.__status, to_status=AccountStatus.BLOCKED)
 
 
     def activate(self) -> None:
         if self.__status == AccountStatus.FROZEN:
             self.__status = AccountStatus.ACTIVE
-            return
-        raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.ACTIVE)
+        raise InvalidAccountStatusTransitionError(from_status=self.__status, to_status=AccountStatus.ACTIVE)
 
 
     def close(self) -> None:
         if self.__status == AccountStatus.BLOCKED:
-            raise InvalidAccountStatusTransitionError(self.__status, AccountStatus.BLOCKED)
+            raise InvalidAccountStatusTransitionError(from_status=self.__status, to_status=AccountStatus.BLOCKED)
         self._validate_closing()
         self.__status = AccountStatus.CLOSED
