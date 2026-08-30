@@ -5,7 +5,8 @@ from decimal import Decimal
 from src.services.interest_service import calculate_interest
 
 from src.exceptions import (InvalidInterestPeriodError,
-                            InvalidInterestRateError)
+                            InvalidInterestRateError,
+                            InvalidDebtError)
 
 
 class TestCalculateInterest:
@@ -80,3 +81,43 @@ class TestCalculateInterestValidation:
                 annual_rate=invalid_annual_rate,
                 days=30
             )
+
+
+    @pytest.mark.parametrize(
+        "invalid_debt",
+        [
+            Decimal("-1.00"),
+            Decimal("Infinity"),
+            Decimal("-Infinity"),
+            Decimal("NaN"),
+            5,
+            5.5,
+            "Roman",
+            None
+        ]
+    )
+    def test_calculate_interest_with_invalid_debt(self, invalid_debt) -> None:
+        with pytest.raises(InvalidDebtError):
+            calculate_interest(
+                debt=invalid_debt,
+                annual_rate=Decimal("15.00"),
+                days=30
+            )
+
+
+class TestCalculateInterestRounding:
+    def test_calculate_simple_interest_rounding(self) -> None:
+        assert calculate_interest(
+            debt=Decimal("10000.00"),
+            annual_rate=Decimal("15.00"),
+            days=365
+        ) == Decimal("1500.00")
+
+
+    def test_calculate_complex_interest_rounding(self) -> None:
+        assert calculate_interest(
+            debt=Decimal("3575.34"),
+            annual_rate=Decimal("13.50"),
+            days=45
+        ) == Decimal("59.51")
+

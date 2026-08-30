@@ -54,30 +54,21 @@ class CreditAccount(BaseAccount):
 
     @property
     def available_credit(self) -> Decimal:
-        return self.__credit_limit - self.__debt
+        return max(
+            Decimal("0.00"),
+            self.__credit_limit - self.__debt
+        )
 
 
     @staticmethod
     def _validate_credit_limit(credit_limit: Decimal) -> None:
-        if not isinstance(credit_limit, Decimal):
-            raise InvalidCreditLimitError(credit_limit=credit_limit)
-
-        if not credit_limit.is_finite():
-            raise InvalidCreditLimitError(credit_limit=credit_limit)
-
-        if credit_limit <= Decimal("0.00"):
+        if not isinstance(credit_limit, Decimal) or not credit_limit.is_finite() or credit_limit <= Decimal("0.00"):
             raise InvalidCreditLimitError(credit_limit=credit_limit)
 
 
     @staticmethod
     def _validate_interest_rate(interest_rate: Decimal) -> None:
-        if not isinstance(interest_rate, Decimal):
-            raise InvalidInterestRateError(interest_rate=interest_rate)
-
-        if not interest_rate.is_finite():
-            raise InvalidInterestRateError(interest_rate=interest_rate)
-
-        if interest_rate < Decimal("0.00"):
+        if not isinstance(interest_rate, Decimal) or not interest_rate.is_finite() or interest_rate < Decimal("0.00"):
             raise InvalidInterestRateError(interest_rate=interest_rate)
 
 
@@ -98,7 +89,7 @@ class CreditAccount(BaseAccount):
 
 
     def _validate_repayment(self, repayment_amount: Decimal) -> None:
-        if self.status not in (AccountStatus.ACTIVE, AccountStatus.FROZEN):
+        if self.status in (AccountStatus.BLOCKED, AccountStatus.CLOSED):
             raise AccountOperationNotAllowedError(
                 operation="repayment",
                 status=self.status
@@ -121,6 +112,14 @@ class CreditAccount(BaseAccount):
     def repay(self, repayment_amount: Decimal) -> None:
         self._validate_repayment(repayment_amount=repayment_amount)
         self.__debt -= repayment_amount
+
+
+    def accrue_interest(self, interest_amount: Decimal) -> None:
+        if self.status == AccountStatus.CLOSED:
+            raise AccountOperationNotAllowedError(operation="interest accrual", status=self.status)
+
+        self._validate_amount(amount=interest_amount)
+        self.__debt += interest_amount
 
 
     def _validate_closing(self) -> None:

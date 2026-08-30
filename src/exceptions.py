@@ -137,5 +137,15 @@ class InvalidInterestPeriodError(BankError):
         self.days = days
         super().__init__(
             f"Invalid interest period: {self.days}."
-            f"Non-negative integer expected."
+            f"Non-negative finite integer expected."
+        )
+
+
+class InvalidDebtError(BankError):
+    # invalid debt
+    def __init__(self, debt: Decimal) -> None:
+        self.debt = debt
+        super().__init__(
+            f"Invalid debt: {self.debt}."
+            f"Non-negative finite decimal expected."
         )

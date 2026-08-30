@@ -299,6 +299,16 @@ class TestCreditAccountRepayment:
             account.repay(Decimal("5000.00"))
 
 
+class TestAccrueInterest:
+    def test_interest_can_be_accrued(self, credit_account_factory: CreditAccountFactory) -> None:
+        account = credit_account_factory()
+        account.spend(Decimal("1000.00"))
+
+        account.accrue_interest(Decimal("15.00"))
+
+        assert account.debt == Decimal("1015.00")
+
+
 class TestCreditAccountClosing:
     def test_account_with_debt_cannot_be_closed(self, credit_account_factory) -> None:
         account = credit_account_factory(
