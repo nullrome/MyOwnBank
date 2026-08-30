@@ -34,7 +34,7 @@ class InsufficientFundsError(BankError):
 
 class AccountNotFoundError(BankError):
     # account was not found
-    def __init__(self, account_id: str):
+    def __init__(self, account_id: str) -> None:
         self.account_id = account_id
         super().__init__(
             f"Account {self.account_id} is not found."
@@ -43,7 +43,7 @@ class AccountNotFoundError(BankError):
 
 class InvalidInterestRateError(BankError):
     # impossible interest rate
-    def __init__(self, interest_rate: object):
+    def __init__(self, interest_rate: object) -> None:
         self.interest_rate = interest_rate
         super().__init__(
             f"Invalid interest rate: {self.interest_rate}%."
@@ -128,4 +128,14 @@ class RepaymentExceedsDebtError(BankError):
         self.debt = debt
         super().__init__(
             f"Repayment amount {self.amount} exceeds outstanding debt {self.debt}."
+        )
+
+
+class InvalidInterestPeriodError(BankError):
+    # invalid days of credit
+    def __init__(self, days: int) -> None:
+        self.days = days
+        super().__init__(
+            f"Invalid interest period: {self.days}."
+            f"Non-negative integer expected."
         )
