@@ -6,7 +6,6 @@ from src.domain.account_status import AccountStatus
 
 
 class BankError(Exception):
-    # base exception for all errors
     pass
 
 

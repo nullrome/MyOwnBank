@@ -116,7 +116,7 @@ class CreditAccount(BaseAccount):
 
     def accrue_interest(self, interest_amount: Decimal) -> None:
         if self.status == AccountStatus.CLOSED:
-            raise AccountOperationNotAllowedError(operation="interest accrual", status=self.status)
+            raise AccountOperationNotAllowedError(operation="accrual of interest", status=self.status)
 
         self._validate_amount(amount=interest_amount)
         self.__debt += interest_amount

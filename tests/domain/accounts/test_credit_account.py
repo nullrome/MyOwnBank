@@ -309,6 +309,56 @@ class TestAccrueInterest:
         assert account.debt == Decimal("1015.00")
 
 
+    def test_frozen_account_can_accrue_interest(self, credit_account_factory: CreditAccountFactory) -> None:
+        account = credit_account_factory()
+        account.spend(Decimal("1000.00"))
+
+        account.freeze()
+
+        account.accrue_interest(Decimal("15.00"))
+
+        assert account.debt == Decimal("1015.00")
+        assert account.status == AccountStatus.FROZEN
+
+
+    def test_blocked_account_can_accrue_interest(self, credit_account_factory: CreditAccountFactory) -> None:
+        account = credit_account_factory()
+        account.spend(Decimal("1000.00"))
+
+        account.block()
+
+        account.accrue_interest(Decimal("15.00"))
+
+        assert account.debt == Decimal("1015.00")
+        assert account.status == AccountStatus.BLOCKED
+
+    def test_closed_account_cannot_accrue_interest(self, credit_account_factory: CreditAccountFactory) -> None:
+        account = credit_account_factory()
+
+        account.close()
+
+        with pytest.raises(AccountOperationNotAllowedError):
+            account.accrue_interest(Decimal("15.00"))
+
+        assert account.status == AccountStatus.CLOSED
+
+
+    def test_available_credit_not_less_than_zero(self) -> None:
+        account = CreditAccount(
+            account_id="credit-1",
+            owner="Roman",
+            credit_limit=Decimal("1000.00"),
+            interest_rate=Decimal("10.00")
+        )
+
+        account.spend(Decimal("950.00"))
+        account.accrue_interest(Decimal("100.00"))
+
+        assert account.debt == Decimal("1050.00")
+        assert account.credit_limit == Decimal("1000.00")
+        assert account.available_credit == Decimal("0.00")
+
+
 class TestCreditAccountClosing:
     def test_account_with_debt_cannot_be_closed(self, credit_account_factory) -> None:
         account = credit_account_factory(
