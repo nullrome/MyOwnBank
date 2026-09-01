@@ -4,7 +4,7 @@ import pytest
 
 from decimal import Decimal
 
-from application.credit.use_cases.accrue_credit_interest import accrue_credit_interest
+from src.application.credit.use_cases.accrue_credit_interest import accrue_credit_interest
 from src.domain.credit.credit_account import CreditAccount
 
 

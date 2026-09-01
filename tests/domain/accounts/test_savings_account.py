@@ -2,7 +2,7 @@ import pytest
 
 from decimal import Decimal
 
-from domain.accounts.savings_account import SavingsAccount
+from src.domain.accounts.savings_account import SavingsAccount
 
 from src.exceptions import (InvalidInterestRateError,
                             WithdrawalLimitExceededError,

@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 
 from decimal import Decimal
 
-from src.exceptions import InvalidAmountError, InvalidAccountStatusTransitionError
+from src.exceptions import (InvalidAmountError,
+                            InvalidAccountStatusTransitionError)
 
 from src.domain.account_status import AccountStatus
 

@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from domain.credit.services.interest_service import calculate_interest
+from src.domain.credit.services.interest_service import calculate_interest
 from src.domain.credit.credit_account import CreditAccount
 
 
