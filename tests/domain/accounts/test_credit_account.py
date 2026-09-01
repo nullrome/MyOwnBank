@@ -13,7 +13,7 @@ from src.exceptions import (InvalidCreditLimitError,
                             RepaymentExceedsDebtError)
 
 from src.domain.account_status import AccountStatus
-from src.domain.credit_account import CreditAccount
+from src.domain.credit.credit_account import CreditAccount
 
 
 CreditAccountFactory = Callable[..., CreditAccount]

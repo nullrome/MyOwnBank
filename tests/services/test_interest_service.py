@@ -2,7 +2,7 @@ import pytest
 
 from decimal import Decimal
 
-from src.services.interest_service import calculate_interest
+from domain.credit.services.interest_service import calculate_interest
 
 from src.exceptions import (InvalidInterestPeriodError,
                             InvalidInterestRateError,

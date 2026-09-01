@@ -1,4 +1,4 @@
-from src.domain.balance_account import BalanceAccount
+from domain.accounts.balance_account import BalanceAccount
 
 from decimal import Decimal
 

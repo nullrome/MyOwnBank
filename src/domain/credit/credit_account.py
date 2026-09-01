@@ -8,7 +8,7 @@ from src.exceptions import (InvalidCreditLimitError,
                             RepaymentExceedsDebtError
                             )
 
-from src.domain.base_account import BaseAccount
+from src.domain.accounts.base_account import BaseAccount
 from src.domain.account_status import AccountStatus
 
 

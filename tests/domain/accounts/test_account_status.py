@@ -3,7 +3,7 @@ import pytest
 from decimal import Decimal
 
 from src.domain.account_status import AccountStatus
-from src.domain.checking_account import CheckingAccount
+from src.domain.accounts.checking_account import CheckingAccount
 from src.exceptions import (
         AccountNotEmptyError,
         InvalidAccountStatusTransitionError

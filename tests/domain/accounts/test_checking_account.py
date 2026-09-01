@@ -7,7 +7,7 @@ from src.exceptions import (InvalidAmountError,
                             AccountOperationNotAllowedError,
                             AccountNotEmptyError)
 
-from src.domain.checking_account import CheckingAccount
+from src.domain.accounts.checking_account import CheckingAccount
 from src.domain.account_status import AccountStatus
 
 

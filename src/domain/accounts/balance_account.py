@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from decimal import Decimal
 
 from src.domain.account_status import AccountStatus
-from src.domain.base_account import BaseAccount
+from domain.accounts.base_account import BaseAccount
 
 from src.exceptions import (AccountOperationNotAllowedError,
                             InvalidAmountError,

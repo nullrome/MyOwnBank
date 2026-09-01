@@ -5,7 +5,7 @@ from src.exceptions import (
                             AccountOperationNotAllowedError
                             )
 
-from src.domain.checking_account import CheckingAccount
+from src.domain.accounts.checking_account import CheckingAccount
 from src.domain.account_status import AccountStatus
 
 from decimal import Decimal
