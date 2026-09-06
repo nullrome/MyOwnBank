@@ -148,3 +148,26 @@ class InvalidDebtError(BankError):
             f"Invalid debt: {self.debt}."
             f"Non-negative finite decimal expected."
         )
+
+
+class InvalidInterestAccrualError(ValueError):
+    def __init__(self, field: str, value: object) -> None:
+        super().__init__(
+            f"Invalid interest accrual field: {field}={value!r}"
+        )
+
+
+class InvalidInterestAccrualPeriodError(InvalidInterestAccrualError):
+    def __init__(
+        self,
+        period_start: object,
+        period_end: object,
+    ) -> None:
+        super().__init__(
+            field="period",
+            value={
+                "period_start": period_start,
+                "period_end": period_end,
+            },
+        )
+    ...
