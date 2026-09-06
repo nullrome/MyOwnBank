@@ -85,13 +85,13 @@ class InterestAccrual:
         accrual_id: UUID,
         account_id: str,
     ) -> None:
-        if not isinstance(accrual_id, str) or accrual_id != accrual_id.strip():
+        if not isinstance(accrual_id, UUID):
             raise InvalidInterestAccrualError(
                 field="accrual_id",
                 value=accrual_id,
             )
 
-        if not isinstance(account_id, str) or accrual_id != account_id.strip():
+        if not isinstance(account_id, str) or not account_id or account_id != account_id.strip():
             raise InvalidInterestAccrualError(
                 field="account_id",
                 value=account_id,
