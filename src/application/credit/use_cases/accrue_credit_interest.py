@@ -19,7 +19,7 @@ def accrue_credit_interest(
     debt_before = account.debt
 
     interest = calculate_interest(
-        debt=account.debt,
+        debt=debt_before,
         annual_rate=account.interest_rate,
         days=days
     )
@@ -27,9 +27,7 @@ def accrue_credit_interest(
     if interest == Decimal("0.00"):
         return None
 
-    account.accrue_interest(interest_amount=interest)
-
-    return InterestAccrual(
+    accrual = InterestAccrual(
         accrual_id=id_generator(),
         account_id=account.account_id,
         period_start=period_start,
@@ -39,8 +37,7 @@ def accrue_credit_interest(
         amount=interest,
     )
 
+    account.accrue_interest(interest_amount=interest)
 
-# TODO: replace direct entity passing with repository-based orchestration
-# TODO: derive accrual period from dates
-# TODO: persist account changes
-# TODO: create interest accrual transaction/event
+    return accrual
+

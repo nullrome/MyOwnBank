@@ -75,6 +75,6 @@ class BaseAccount(ABC):
 
     def close(self) -> None:
         if self.__status == AccountStatus.BLOCKED:
-            raise InvalidAccountStatusTransitionError(from_status=self.__status, to_status=AccountStatus.BLOCKED)
+            raise InvalidAccountStatusTransitionError(from_status=self.__status, to_status=AccountStatus.CLOSED)
         self._validate_closing()
         self.__status = AccountStatus.CLOSED

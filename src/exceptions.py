@@ -170,4 +170,4 @@ class InvalidInterestAccrualPeriodError(InvalidInterestAccrualError):
                 "period_end": period_end,
             },
         )
-    ...
+
