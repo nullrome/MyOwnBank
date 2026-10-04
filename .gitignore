@@ -1,11 +1,70 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.pyre/
+.hypothesis/
+
+# Virtual environments
 .venv/
+venv/
+env/
+ENV/
+.tox/
+.nox/
 
-.idea/
-
-.DS_Store/
-
-
+# Test coverage
 .coverage
-
-
+.coverage.*
 htmlcov/
+coverage.xml
+coverage.json
+*.cover
+*.py,cover
+
+# Build and packaging output
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+pip-wheel-metadata/
+
+# Local configuration and secrets (keep example files trackable)
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+.envrc
+
+# Local databases and runtime output
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+*.log
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Operating system metadata
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
